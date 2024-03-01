@@ -462,7 +462,7 @@ public class SBAStoreInventoryV2 extends AbstractStoreInventory {
 
                     case "healpool":
                         shouldSellStack = false;
-                        messageOnFail.set(null);
+                        messageOnFail.set(MessageKeys.GREATEST_SPAWNER);
 
                         if (gameStorage.arePoolEnabled(team)) {
                             messageOnFail.set(MessageKeys.WAIT_FOR_TRAP);
@@ -546,8 +546,11 @@ public class SBAStoreInventoryV2 extends AbstractStoreInventory {
                             
                             for (var spawner : spawnersToUpgrade) {
                                 double newLevel = spawner.getCurrentLevel() + addLevels;
-                                if (newLevel > maxLevel && maxLevel > 0)
+                                if (newLevel > maxLevel && maxLevel > 0){
                                     newLevel = maxLevel;
+                                    shouldSellStack = false;
+                                    messageOnFail.set(MessageKeys.GREATEST_SPAWNER);
+                                }
                                 spawner.setCurrentLevel(newLevel);
                             }
 

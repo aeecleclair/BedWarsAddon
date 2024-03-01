@@ -25,6 +25,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.Server;
 import org.bukkit.entity.Bat;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
@@ -430,15 +431,27 @@ public class Arena implements IArena {
             int firstKillerScore = 0;
             UUID firstKillerUUID = null;
 
+            String extrememessage = "\u00A7c-----------------------------------------------------\u00A7r";
+            String newline=System.getProperty("line.separator");
+            String messagef = extrememessage + newline + newline + "                          "+ game.getName() + " - Joueurs " + newline + newline;
+
+
             for (Map.Entry<UUID, GamePlayerData> entry : playerDataMap.entrySet()) {
                 final var playerData = playerDataMap.get(entry.getKey());
                 final var kills = playerData.getKills();
+                final var beddestroyed = playerData.getBedDestroys();
+                Logger.info(game.getName());
+                Logger.info(playerData.getName() + " : " + String.valueOf(kills)+ " kills | " + String.valueOf(beddestroyed) + " bed destroyed");
+                messagef = messagef + "                  \u00A7l"+ playerData.getName() + " : \u00A7r" + String.valueOf(kills)+ " kills | " + String.valueOf(beddestroyed) + " bed destroyed" + newline;
                 if (kills > 0 && kills > firstKillerScore) {
                     firstKillerScore = kills;
                     firstKillerName = playerData.getName();
                     firstKillerUUID = entry.getKey();
                 }
             }
+
+            messagef = messagef + newline + extrememessage;
+            Bukkit.getServer( ).broadcastMessage(messagef);
 
             String secondKillerName = nullStr;
             String secondKillerUsername = nullStr;
